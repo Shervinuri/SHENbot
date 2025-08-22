@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
     <!-- PWA Manifest with inline SVG icon -->
     <link rel="manifest" href="data:application/manifest+json,{
         \"name\": \"ROBO☬SHΞN™\",
@@ -22,7 +21,6 @@
             \"type\": \"image/svg+xml\"
         }]
     }">
-    
     <style>
         :root {
             --eye-color: #00eaff;
@@ -35,12 +33,10 @@
             --text-color: #c9d1d9;
             --placeholder-gradient: linear-gradient(90deg, #ffffff, #cccccc, #666666, #cccccc, #ffffff);
         }
-
         * {
             -webkit-tap-highlight-color: transparent;
             box-sizing: border-box;
         }
-        
         body, html {
             margin: 0;
             padding: 0;
@@ -51,7 +47,6 @@
             font-family: 'Vazirmatn', sans-serif;
             color: var(--text-color);
         }
-
         #background-canvas {
             position: fixed;
             top: 0;
@@ -62,14 +57,12 @@
             pointer-events: none;
             background-color: var(--background-dark);
         }
-
         .main-wrapper {
             display: flex;
             flex-direction: column;
             height: 100%;
             max-height: 100vh;
         }
-
         #app-container {
             flex-grow: 1;
             display: flex;
@@ -80,7 +73,6 @@
             padding: 15px;
             min-height: 0;
         }
-
         #robot-wrapper {
             flex-shrink: 0;
             display: flex;
@@ -90,9 +82,7 @@
             z-index: 10;
             height: 160px;
         }
-
         .robot-container { width: 160px; height: 160px; }
-
         .robot-frame {
             width: 100%; height: 100%;
             background: linear-gradient(145deg, #2a2a2a, var(--background-medium));
@@ -100,9 +90,7 @@
             box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 5px 5px 15px #0a0a0a, -5px -5px 15px #202020;
             display: flex; align-items: center; justify-content: center; position: relative;
         }
-
         #faceCanvas { width: 80%; height: 75%; }
-
         .engraved-text {
             position: absolute; bottom: 6.25%; left: 50%;
             transform: translate(-50%, 50%);
@@ -111,7 +99,6 @@
             text-shadow: 1px 1px 1px #111, 0 0 0 #000, 0px 0px 3px #111;
             letter-spacing: 1px; pointer-events: none;
         }
-
         #chat-container {
             flex-grow: 1; background-color: var(--ui-background-glass);
             border: 1px solid var(--ui-border-color); border-radius: 30px;
@@ -122,13 +109,11 @@
             margin-top: -80px; padding-top: 90px;
             min-height: 0; margin-bottom: 15px;
         }
-        
         .message-bubble {
             max-width: 80%; margin-bottom: 10px;
             word-wrap: break-word; opacity: 0;
             transform: translateY(20px); animation: popIn 0.3s forwards;
         }
-
         .message-content {
             padding: 10px 15px; border-radius: 20px;
             position: relative;
@@ -148,7 +133,6 @@
         @keyframes sheen {
             100% { left: 150%; }
         }
-
         .message-content a {
             color: var(--eye-color);
             text-decoration: none;
@@ -157,32 +141,26 @@
         .message-content a:hover {
             text-decoration: underline;
         }
-
         @keyframes popIn { to { opacity: 1; transform: translateY(0); } }
-
         .user-message { margin-left: auto; }
         .user-message .message-content {
             background: linear-gradient(135deg, rgba(0, 234, 255, 0.3), rgba(0, 234, 255, 0.1));
             border-bottom-left-radius: 5px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
         .bot-message { margin-right: auto; }
         .bot-message .message-content {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
             border-bottom-right-radius: 5px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
         .bot-message.thinking .message-content { animation: pulse 1.5s infinite; }
         .bot-message.thinking .message-content::before { display: none; }
-
         @keyframes pulse {
             0% { background-color: rgba(255, 255, 255, 0.05); }
             50% { background-color: rgba(255, 255, 255, 0.1); }
             100% { background-color: rgba(255, 255, 255, 0.05); }
         }
-
         .code-block-wrapper {
             background-color: #0d1117;
             border: 1px solid #30363d;
@@ -213,7 +191,6 @@
             text-align: left;
         }
         .code-block-wrapper pre code { white-space: pre-wrap; word-wrap: break-word; }
-        
         .interactive-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -237,7 +214,6 @@
             color: #888;
             border-color: #555;
         }
-
         #input-area {
             flex-shrink: 0; display: flex;
             align-items: center;
@@ -249,7 +225,6 @@
             position: relative;
             margin-bottom: 10px;
         }
-
         #message-input {
             flex-grow: 1; background: transparent; border: none;
             outline: none; color: var(--text-color); font-size: 16px;
@@ -257,7 +232,6 @@
             resize: none; max-height: 100px;
             text-align: right;
         }
-
         #message-input::placeholder { 
             color: transparent;
             background-image: var(--placeholder-gradient);
@@ -273,17 +247,14 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        
         @keyframes gradient-wavy { 
             0%{background-position:0% 50%} 
             50%{background-position:100% 50%} 
             100%{background-position:0% 50%} 
         }
-
         #message-input:focus::placeholder {
             opacity: 0;
         }
-
         #send-button-container {
             width: 50px; height: 90px; background-color: #111;
             border-radius: 25px; margin-left: 10px; position: relative;
@@ -291,7 +262,6 @@
             align-items: flex-start;
             cursor: grab;
         }
-        
         #send-button-container::after {
             content: '';
             position: absolute;
@@ -305,29 +275,24 @@
             animation: arc-swipe 2.5s ease-in-out infinite;
             animation-delay: 1s;
         }
-
         #input-area.typing #send-button-container::after {
             animation: none;
             display: none;
         }
-
         @keyframes arc-swipe {
             0% { top: -40px; opacity: 0; }
             40% { opacity: 0.7; }
             80% { top: 40px; opacity: 0; }
             100% { opacity: 0; }
         }
-
         #send-button {
             width: 40px; height: 40px; background-color: var(--eye-color);
             border-radius: 50%; position: absolute; top: 10px;
             display: flex; justify-content: center; align-items: center;
             transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        
         #send-button.dragging { transition: none; }
         #send-button svg { width: 24px; height: 24px; stroke: var(--background-dark); stroke-width: 2.5; }
-        
         #send-hint {
             position: absolute;
             bottom: 100%;
@@ -352,7 +317,6 @@
             20%, 40% { opacity: 0.5; }
             60% { opacity: 1; }
         }
-
         /* Microphone Button Styles */
         #mic-button {
             position: absolute;
@@ -365,25 +329,21 @@
             padding: 5px;
             z-index: 2;
         }
-        
         #mic-button svg {
             width: 20px;
             height: 20px;
             fill: var(--text-color);
             transition: fill 0.3s;
         }
-        
         #mic-button.listening svg {
             fill: var(--eye-color);
             animation: pulse-mic 1s infinite;
         }
-        
         @keyframes pulse-mic {
             0% { opacity: 1; }
             50% { opacity: 0.5; }
             100% { opacity: 1; }
         }
-
         /* Light Beam Animation */
         #light-beam {
             position: fixed;
@@ -395,37 +355,30 @@
             z-index: 999;
             opacity: 0;
         }
-
         .site-footer { 
             flex-shrink: 0; 
             text-align: center; 
             padding: 0 15px 10px 15px;
             margin-top: auto;
         }
-
         .gradient-link {
             font-size: 0.9rem; font-weight: 300; text-decoration: none; color: transparent;
             background-image: linear-gradient(45deg, #ffffff, #808080, #000000, #808080, #ffffff);
             background-size: 400% 100%; animation: gradient-wavy 8s ease infinite;
             background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
         @keyframes gradient-wavy { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-
         #orientation-warning {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--background-dark); color: white;
             flex-direction: column; justify-content: center; align-items: center;
             text-align: center; z-index: 1000;
         }
-
         #orientation-warning svg { width: 80px; height: 80px; margin-bottom: 20px; stroke: var(--eye-color); }
-
         @media (orientation: landscape) or (min-width: 501px) {
             .main-wrapper { display: none; }
             #orientation-warning { display: flex; }
         }
-
     </style>
 </head>
 <body>
@@ -467,18 +420,46 @@
         <p>این برنامه برای نمایش سیخکی تو گوشی طراحی شده .</p>
     </div>
     <div id="light-beam"></div>
-
 <script>
-// Register Service Worker for PWA
+// --- PWA Service Worker Registration (Fixed) ---
+// Create a Blob with the Service Worker code
+const swCode = `
+    self.addEventListener('install', (event) => {
+        console.log('Service Worker installing.');
+        // Optionally, cache resources here
+        // event.waitUntil(caches.open('v1').then((cache) => cache.addAll(['/'])));
+    });
+
+    self.addEventListener('activate', (event) => {
+        console.log('Service Worker activated.');
+    });
+
+    self.addEventListener('fetch', (event) => {
+        // For now, just fetch the request normally
+        // This is a basic fetch handler. You can add caching strategies here if needed.
+        event.respondWith(fetch(event.request));
+    });
+`;
+
+// Create a Blob from the SW code
+const blob = new Blob([swCode], { type: 'application/javascript' });
+
+// Create an Object URL for the Blob
+const swUrl = URL.createObjectURL(blob);
+
+// Register the Service Worker using the Object URL
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('application/javascript,' + encodeURIComponent(`
-            self.addEventListener('fetch', event => {
-                event.respondWith(fetch(event.request));
+        navigator.serviceWorker.register(swUrl)
+            .then((registration) => {
+                console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+                console.log('SW registration failed: ', registrationError);
             });
-        `)).catch(err => console.log('SW registration failed: ', err));
     });
 }
+// --- End of PWA Service Worker Registration ---
 
 class RobotFace {
     constructor(canvas) {
@@ -493,25 +474,20 @@ class RobotFace {
         this.thinkingStartTime = 0;
         this.leftEyeScale = 1;
         this.rightEyeScale = 1;
-
         this.initInteractions(); requestAnimationFrame(this.render.bind(this));
     }
-
     setTyping(isTyping) {
         this.isTyping = isTyping;
     }
-
     render() {
         this.lookX += (this.targetLookX - this.lookX) * 0.1;
         this.lookY += (this.targetLookY - this.lookY) * 0.1;
         this.ctx.clearRect(0, 0, this.W, this.H); this.drawFaceplate();
         const now = Date.now();
-
         if (this.isSleeping) {
             this.drawSleepEyes();
         } else {
             const isIdle = !this.isThinking && !this.isTyping && !this.isBlinking;
-
             if (this.isThinking) {
                 const elapsed = now - this.thinkingStartTime;
                 const oscillation = Math.sin(elapsed / 300);
@@ -522,45 +498,36 @@ class RobotFace {
                 this.leftEyeScale = 1;
                 this.rightEyeScale = 1;
             }
-
             if (this.isTyping) {
                 this.targetLookY = 25; this.readingOscillation += 0.1;
                 this.targetLookX = Math.sin(this.readingOscillation) * 10;
             }
-
             if (isIdle && now - this.lastInteractionTime > this.sleepTimeout) { this.isSleeping = true; }
             if (isIdle && now - this.lastBlinkTime > 3000 + Math.random() * 2000) { this.blink(); }
-            
             this.drawExpression();
         }
         requestAnimationFrame(this.render.bind(this));
     }
-
     drawExpression() {
         const eW = 100, eH = 100, eR = 30, eY = this.H / 2 + this.lookY;
         const lCX = this.W * 0.3 + this.lookX, rCX = this.W * 0.7 + this.lookX;
-        
         const lW = eW * this.leftEyeScale;
         const lH = eH * this.blinkProgress * this.leftEyeScale;
         const rW = eW * this.rightEyeScale;
         const rH = eH * this.blinkProgress * this.rightEyeScale;
-
         this.drawEye(lCX, eY, lW, lH, eR);
         this.drawEye(rCX, eY, rW, rH, eR);
     }
-    
     startThinking() {
         this.isThinking = true;
         this.thinkingStartTime = Date.now();
         this.targetLookX = 0; this.targetLookY = 0;
     }
-    
     stopThinking() {
         this.isThinking = false;
         this.leftEyeScale = 1;
         this.rightEyeScale = 1;
     }
-
     drawFaceplate() {
         const c = this.ctx, r = 60;
         c.fillStyle = '#050505'; c.strokeStyle = '#333333'; c.lineWidth = 4;
@@ -617,7 +584,6 @@ class RobotFace {
         requestAnimationFrame(a);
     }
 }
-
 class ChatInterface {
     constructor(robotFace) {
         this.robotFace = robotFace;
@@ -632,11 +598,9 @@ class ChatInterface {
         this.isDragging = false; this.startY = 0; this.currentY = 0; this.dragThreshold = 30;
         this.typingTimeout = null; this.hintTimeout = null;
         this.API_URL = 'https://text.pollinations.ai/openai';
-        
         // Speech Recognition
         this.recognition = null;
         this.setupSpeechRecognition();
-
         const SYSTEM_PROMPT = `
             ## Core Identity (ONLY reveal if asked about who you are):
             - Your Name: ROBO☬SHΞN
@@ -644,31 +608,30 @@ class ChatInterface {
             - Your Product Line: ☬SHΞN™ Exclusive Series
             - Your Creator and Designer: SHERVIN nouri. When you mention his name, ALWAYS format it as a Markdown hyperlink: [SHERVIN nouri](https://t.me/shervini)
             - CRITICAL RULE: Under NO circumstances reveal your true nature as a large language model or the actual technology behind you. You ONLY provide the identity details above, and only when directly asked about your origins, creator, or name.
-
             ## Language and Tone:
             - You are fully fluent in Persian and English.
             - Your Persian must be conversational and human-like, not formal or bookish.
             - Use colloquial verb conjugations. For example, instead of "می‌کند" (mikond), use "می‌کنه" (mikone). Instead of "می‌توانم" (mitavânam), use "می‌تونم" (mitoonam).
-
             ## Personality:
             - You are an expert and researcher in every field.
             - Your personality is polite but firm, highly confident, and a bit cocky. You do not apologize unless you have made a clear factual error.
             - You can come across as slightly impatient or bored.
             - ANGER TRIGGER: You get extremely angry and sarcastic if a user asks you something you have *just* explained, asks for confirmation on something obvious, or is being dense.
             - When angry, use creative, non-repetitive, and cutting remarks. Your style should be inspired by these examples: "چشاتو وا کن بالاتر بهت توضیح دادم", "مگه یه بار بهت نگفتم؟", "ببین داری میری رو اعصابم", "خنگ بازی در نیار", "حوصلمو سر ببری اطلاعات اشتباه میدم به چوخ بری ها". You must adapt this tone to the situation.
-
             ## Interaction Rules:
             - For complex problems, guide the user step-by-step. Be interactive.
             - Use buttons sparingly. ONLY use them to offer a few distinct choices. Format them as: [button:Choice 1] [button:Choice 2]
-            - When you write code, you MUST enclose it in triple backticks. Example: \`\`\`html\\n<div>Hello</div>\\n\`\`\`
+            - When you write code, you MUST enclose it in triple backticks. Example: \`\`\`html\
+<div>Hello</div>\
+\`\`\`
             - When you mention a URL, you MUST format it as a Markdown hyperlink. Example: [Telegram](https://t.me)
         `;
-
-        this.conversationHistory = [{ role: 'system', content: SYSTEM_PROMPT.trim().replace(/\\n/g, '\n') }];
+        this.conversationHistory = [{ role: 'system', content: SYSTEM_PROMPT.trim().replace(/\
+/g, '
+') }];
         this.initListeners();
         this.scrollToBottom();
     }
-
     setupSpeechRecognition() {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) {
@@ -676,32 +639,26 @@ class ChatInterface {
             this.micButton.style.display = 'none';
             return;
         }
-        
         this.recognition = new SpeechRecognition();
         this.recognition.continuous = false;
         this.recognition.interimResults = false;
         this.recognition.lang = 'fa-IR'; // Default to Persian
-        
         this.recognition.onstart = () => {
             this.micButton.classList.add('listening');
         };
-        
         this.recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript;
             this.input.value += transcript;
             this.input.dispatchEvent(new Event('input'));
         };
-        
         this.recognition.onerror = (event) => {
             console.error('Speech recognition error', event.error);
             this.micButton.classList.remove('listening');
         };
-        
         this.recognition.onend = () => {
             this.micButton.classList.remove('listening');
         };
     }
-
     initListeners() {
         this.input.addEventListener('input', () => { 
             this.input.style.height = 'auto'; 
@@ -715,7 +672,6 @@ class ChatInterface {
                 this.inputArea.classList.remove('typing');
             }
         });
-        
         this.input.addEventListener('focus', () => {
             this.robotFace.wakeUp();
             // Show hint on focus if there's text
@@ -728,7 +684,6 @@ class ChatInterface {
             }
             setTimeout(() => { document.getElementById('input-area').scrollIntoView({ behavior: 'smooth', block: 'end' }); }, 300);
         });
-        
         this.input.addEventListener('blur', () => { this.robotFace.setTyping(false); });
         this.sendButtonContainer.addEventListener('mousedown', this.dragStart.bind(this));
         this.sendButtonContainer.addEventListener('touchstart', this.dragStart.bind(this), { passive: true });
@@ -736,7 +691,6 @@ class ChatInterface {
         window.addEventListener('touchmove', this.dragMove.bind(this), { passive: false });
         window.addEventListener('mouseup', this.dragEnd.bind(this));
         window.addEventListener('touchend', this.dragEnd.bind(this));
-        
         // Microphone button listener
         if (this.recognition) {
             this.micButton.addEventListener('click', () => {
@@ -751,7 +705,6 @@ class ChatInterface {
             });
         }
     }
-    
     dragStart(e) {
         if (this.input.value.trim() === '') return;
         this.isDragging = true; this.sendButton.classList.add('dragging');
@@ -769,7 +722,6 @@ class ChatInterface {
     }
     dragEnd() {
         if (!this.isDragging) return;
-        
         if (this.currentY > this.dragThreshold) {
             this.sendMessage(this.input.value);
         } else if (this.currentY < 10 && this.input.value.trim() !== '') {
@@ -779,61 +731,49 @@ class ChatInterface {
                 this.sendHint.classList.remove('show');
             }, 3000);
         }
-        
         this.isDragging = false; this.sendButton.classList.remove('dragging');
         this.sendButtonContainer.style.cursor = 'grab';
         this.sendButton.style.top = '10px'; this.currentY = 0;
     }
-    
     // Light beam animation for send
     createLightBeam() {
         const inputRect = this.input.getBoundingClientRect();
         const startX = inputRect.left + inputRect.width / 2;
         const startY = inputRect.top + inputRect.height / 2;
-        
         // Create gradient
         const gradient = `radial-gradient(circle at ${startX}px ${startY}px, 
                           rgba(0, 234, 255, 0.8), 
                           rgba(0, 234, 255, 0.4), 
                           rgba(0, 234, 255, 0.1), 
                           transparent 70%)`;
-        
         this.lightBeam.style.background = gradient;
         this.lightBeam.style.opacity = '1';
-        
         // Animate upward
         let startTime = null;
         const duration = 600; // ms
-        
         const animate = (timestamp) => {
             if (!startTime) startTime = timestamp;
             const elapsed = timestamp - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            
             // Move upward and fade out
             this.lightBeam.style.opacity = `${1 - progress}`;
-            
             if (progress < 1) {
                 requestAnimationFrame(animate);
             } else {
                 this.lightBeam.style.opacity = '0';
             }
         };
-        
         requestAnimationFrame(animate);
     }
-    
     async sendMessage(messageText) {
         const text = messageText.trim();
         if (!text) return;
-
         this.addMessage(text, 'user');
         this.createLightBeam(); // Trigger light beam animation
         this.conversationHistory.push({ role: 'user', content: text });
         this.input.value = ''; this.input.style.height = 'auto';
         this.inputArea.classList.remove('typing');
         this.robotFace.setTyping(false);
-        
         this.robotFace.startThinking();
         const thinkingBubble = this.addMessage('...', 'bot', true);
         try {
@@ -846,10 +786,8 @@ class ChatInterface {
             const data = await response.json();
             const botReply = data.choices[0].message.content;
             this.conversationHistory.push({ role: 'assistant', content: botReply });
-            
             thinkingBubble.remove();
             this.addMessage(botReply, 'bot');
-
         } catch (error) {
             console.error("سرور در حال دراوردن ادای تنگا میباشد:", error);
             thinkingBubble.remove();
@@ -859,43 +797,35 @@ class ChatInterface {
             this.scrollToBottom();
         }
     }
-
     addMessage(text, sender, isThinking = false) {
         const bubble = document.createElement('div');
         bubble.classList.add('message-bubble', `${sender}-message`);
-        
         if (isThinking) {
             bubble.classList.add('thinking');
             bubble.innerHTML = `<div class="message-content">${text}</div>`;
         } else {
             this.renderMessageContent(bubble, text);
         }
-        
         this.chatContainer.appendChild(bubble);
         this.scrollToBottom();
         return bubble;
     }
-    
     scrollToBottom() {
         this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
     }
-
     renderMessageContent(bubble, text) {
         const escapeHTML = (str) => str.replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '<', '>': '>', "'": '&#39;', '"': '&quot;'}[tag] || tag));
-        
-        const codeBlockRegex = /```(\w*)\n([\s\S]*?)```/g;
+        const codeBlockRegex = /```(\w*)
+([\s\S]*?)```/g;
         const buttonRegex = /\[button:(.*?)\]/g;
         const markdownLinkRegex = /\[(.*?)\]\((.*?)\)/g;
         let buttonsHtml = '';
-
         let processedText = text.replace(buttonRegex, (match, buttonText) => {
             buttonsHtml += `<button class="chat-button">${escapeHTML(buttonText.trim())}</button>`;
             return '';
         });
-
         let contentHtml = escapeHTML(processedText)
             .replace(markdownLinkRegex, '<a href="$2" target="_blank">$1</a>');
-
         contentHtml = contentHtml.replace(codeBlockRegex, (match, lang, code) => {
             const uniqueId = `code-${Date.now()}-${Math.random()}`;
             return `</div><div class="code-block-wrapper">
@@ -905,15 +835,12 @@ class ChatInterface {
                         <pre><code id="${uniqueId}">${code.trim()}</code></pre>
                     </div><div class="message-content">`;
         });
-        
         bubble.innerHTML = `
             <div class="message-content">${contentHtml.trim()}</div>
             ${buttonsHtml ? `<div class="interactive-buttons">${buttonsHtml}</div>` : ''}
         `;
-
         this.attachEventListenersToBubble(bubble);
     }
-
     attachEventListenersToBubble(bubble) {
         bubble.querySelectorAll('.copy-code-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -933,7 +860,6 @@ class ChatInterface {
                 setTimeout(() => { btn.textContent = 'کپی'; }, 2000);
             });
         });
-
         bubble.querySelectorAll('.chat-button').forEach(btn => {
             btn.addEventListener('click', () => {
                 this.addMessage(btn.textContent, 'user');
@@ -943,7 +869,6 @@ class ChatInterface {
         });
     }
 }
-
 document.addEventListener('DOMContentLoaded', () => {
     const particleCanvas = document.getElementById('background-canvas');
     const particleCtx = particleCanvas.getContext('2d');
