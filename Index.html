@@ -9,8 +9,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#00eaff">
+    <link rel="manifest" href="data:application/manifest+json,{
+        \"name\": \"ROBO☬SHΞN™\",
+        \"short_name\": \"ROBO☬SHΞN\",
+        \"start_url\": \"/\",
+        \"display\": \"standalone\",
+        \"background_color\": \"#000000\",
+        \"theme_color\": \"#00eaff\",
+        \"icons\": [{
+            \"src\": \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%23000000'/%3E%3Ctext x='96' y='140' font-family='Arial' font-size='140' text-anchor='middle' fill='%2300eaff'%3E%E2%98%AC%3C/text%3E%3C/svg%3E\",
+            \"sizes\": \"192x192\",
+            \"type\": \"image/svg+xml\"
+        }]
+    }">
     
     <style>
         :root {
@@ -33,7 +44,7 @@
         body, html {
             margin: 0;
             padding: 0;
-            height: 100vh;
+            height: 100%;
             width: 100%;
             background-color: transparent; 
             overflow: hidden;
@@ -56,6 +67,7 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            max-height: 100vh; /* Added for better height control */
         }
 
         #app-container {
@@ -235,6 +247,7 @@
             -webkit-backdrop-filter: blur(12px);
             box-shadow: 0 0 30px var(--ui-shadow-color);
             position: relative;
+            margin-bottom: 10px; /* Added margin to separate from footer */
         }
 
         #message-input {
@@ -371,19 +384,24 @@
             100% { opacity: 1; }
         }
 
-        /* Energy Transfer Animation */
-        .energy-transfer {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--eye-color);
-            box-shadow: 0 0 15px var(--eye-color);
+        /* Light Beam Animation */
+        #light-beam {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            z-index: 1000;
+            z-index: 999;
+            opacity: 0;
         }
 
-        .site-footer { flex-shrink: 0; text-align: center; padding: 0 15px 10px 15px; }
+        .site-footer { 
+            flex-shrink: 0; 
+            text-align: center; 
+            padding: 0 15px 10px 15px;
+            margin-top: auto; /* Push footer to bottom */
+        }
 
         .gradient-link {
             font-size: 0.9rem; font-weight: 300; text-decoration: none; color: transparent;
@@ -448,37 +466,17 @@
         <h2>فورا راست کن گوشی ضمنا رو سیستم هم آنتن نمیده </h2>
         <p>این برنامه برای نمایش سیخکی تو گوشی طراحی شده .</p>
     </div>
+    <div id="light-beam"></div>
 
 <script>
-// PWA Installation Logic
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent Chrome 67 and earlier from automatically showing the prompt
-    e.preventDefault();
-    // Stash the event so it can be triggered later.
-    deferredPrompt = e;
-    // Show the install button/offer the install prompt after a short delay
-    setTimeout(() => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the A2HS prompt');
-                } else {
-                    console.log('User dismissed the A2HS prompt');
-                }
-                deferredPrompt = null;
-            });
-        }
-    }, 3000); // Show prompt after 3 seconds
-});
-
 // Register Service Worker for PWA
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(err => {
-            console.log('SW registration failed: ', err);
-        });
+        navigator.serviceWorker.register('data:application/javascript,' + encodeURIComponent(`
+            self.addEventListener('fetch', event => {
+                event.respondWith(fetch(event.request));
+            });
+        `)).catch(err => console.log('SW registration failed: ', err));
     });
 }
 
@@ -630,6 +628,7 @@ class ChatInterface {
         this.sendButton = document.getElementById('send-button');
         this.sendHint = document.getElementById('send-hint');
         this.micButton = document.getElementById('mic-button');
+        this.lightBeam = document.getElementById('light-beam');
         this.isDragging = false; this.startY = 0; this.currentY = 0; this.dragThreshold = 30;
         this.typingTimeout = null; this.hintTimeout = null;
         this.API_URL = 'https://text.pollinations.ai/openai';
@@ -786,46 +785,38 @@ class ChatInterface {
         this.sendButton.style.top = '10px'; this.currentY = 0;
     }
     
-    // Energy transfer animation for send
-    createEnergyTransfer() {
+    // Light beam animation for send
+    createLightBeam() {
         const inputRect = this.input.getBoundingClientRect();
-        const chatRect = this.chatContainer.getBoundingClientRect();
-        
         const startX = inputRect.left + inputRect.width / 2;
         const startY = inputRect.top + inputRect.height / 2;
-        const endX = chatRect.left + chatRect.width / 2;
-        const endY = chatRect.top + chatRect.height / 2;
         
-        const energy = document.createElement('div');
-        energy.classList.add('energy-transfer');
-        energy.style.left = `${startX}px`;
-        energy.style.top = `${startY}px`;
-        document.body.appendChild(energy);
+        // Create gradient
+        const gradient = `radial-gradient(circle at ${startX}px ${startY}px, 
+                          rgba(0, 234, 255, 0.8), 
+                          rgba(0, 234, 255, 0.4), 
+                          rgba(0, 234, 255, 0.1), 
+                          transparent 70%)`;
         
-        // Animate with spring physics
+        this.lightBeam.style.background = gradient;
+        this.lightBeam.style.opacity = '1';
+        
+        // Animate upward
         let startTime = null;
-        const duration = 800; // ms
+        const duration = 600; // ms
         
         const animate = (timestamp) => {
             if (!startTime) startTime = timestamp;
             const elapsed = timestamp - startTime;
             const progress = Math.min(elapsed / duration, 1);
             
-            // Spring easing function
-            const springProgress = 1 - Math.exp(-6 * progress) * Math.cos(12 * Math.PI * progress);
-            
-            const currentX = startX + (endX - startX) * springProgress;
-            const currentY = startY + (endY - startY) * springProgress;
-            
-            energy.style.left = `${currentX}px`;
-            energy.style.top = `${currentY}px`;
-            energy.style.opacity = `${1 - progress}`;
-            energy.style.transform = `scale(${1 + 0.5 * (1 - progress)})`;
+            // Move upward and fade out
+            this.lightBeam.style.opacity = `${1 - progress}`;
             
             if (progress < 1) {
                 requestAnimationFrame(animate);
             } else {
-                energy.remove();
+                this.lightBeam.style.opacity = '0';
             }
         };
         
@@ -837,7 +828,7 @@ class ChatInterface {
         if (!text) return;
 
         this.addMessage(text, 'user');
-        this.createEnergyTransfer(); // Trigger energy transfer animation
+        this.createLightBeam(); // Trigger light beam animation
         this.conversationHistory.push({ role: 'user', content: text });
         this.input.value = ''; this.input.style.height = 'auto';
         this.inputArea.classList.remove('typing');
