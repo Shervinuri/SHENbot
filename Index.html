@@ -415,61 +415,6 @@
             #orientation-warning { display: flex; }
         }
 
-        /* Welcome Message Styles */
-        #welcome-message {
-            display: none;
-            max-width: 80%;
-            margin-bottom: 10px;
-            word-wrap: break-word;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: popIn 0.3s forwards;
-        }
-
-        #welcome-message .message-content {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            border-bottom-right-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 10px 15px;
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #welcome-message .message-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: skewX(-25deg);
-            animation: sheen 4s infinite;
-        }
-
-        #welcome-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        #install-button, #continue-button {
-            background-color: transparent;
-            border: 1px solid var(--ui-border-color);
-            color: var(--eye-color);
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: 'Vazirmatn', sans-serif;
-            transition: background-color 0.2s;
-        }
-
-        #install-button:hover, #continue-button:hover {
-            background-color: rgba(0, 234, 255, 0.1);
-        }
-
     </style>
 </head>
 <body>
@@ -484,18 +429,7 @@
                     </div>
                 </div>
             </div>
-            <div id="chat-container">
-                <!-- Welcome message will be inserted here by JavaScript -->
-                <div id="welcome-message" class="message-bubble bot-message">
-                    <div class="message-content">
-                        من نسخه ی mini از مجموعه ی SHENbot ها هستم میتونی منو رو دسکتاپت add کنی که دم دستت باشم دلتم نخواست به ... همینجا ادامه میدیم 🤍
-                        <div id="welcome-buttons">
-                            <button id="install-button">نصب</button>
-                            <button id="continue-button">ادامه</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id="chat-container"></div>
             <div id="input-area">
                 <button id="mic-button" aria-label="ضبط صدا">
                     <svg viewBox="0 0 24 24">
@@ -537,9 +471,6 @@ if ('serviceWorker' in navigator) {
     });
 }
 // --- End of PWA Service Worker Registration ---
-
-// Variable to track if welcome message has been shown
-let welcomeMessageShown = false;
 
 class RobotFace {
     constructor(canvas) {
@@ -690,9 +621,6 @@ class ChatInterface {
         this.sendHint = document.getElementById('send-hint');
         this.micButton = document.getElementById('mic-button');
         this.lightBeam = document.getElementById('light-beam');
-        this.welcomeMessage = document.getElementById('welcome-message');
-        this.installButton = document.getElementById('install-button');
-        this.continueButton = document.getElementById('continue-button');
         this.isDragging = false; this.startY = 0; this.currentY = 0; this.dragThreshold = 30;
         this.typingTimeout = null; this.hintTimeout = null;
         this.API_URL = 'https://text.pollinations.ai/openai';
@@ -731,8 +659,6 @@ class ChatInterface {
         this.conversationHistory = [{ role: 'system', content: SYSTEM_PROMPT.trim().replace(/\\n/g, '\n') }];
         this.initListeners();
         this.scrollToBottom();
-        // Show welcome message on first load
-        this.showWelcomeMessage();
     }
 
     setupSpeechRecognition() {
@@ -814,19 +740,6 @@ class ChatInterface {
                     this.recognition.lang = hasEnglish ? 'en-US' : 'fa-IR';
                     this.recognition.start();
                 }
-            });
-        }
-        
-        // Welcome message button listeners
-        if (this.installButton) {
-            this.installButton.addEventListener('click', () => {
-                this.triggerInstallPrompt();
-            });
-        }
-        
-        if (this.continueButton) {
-            this.continueButton.addEventListener('click', () => {
-                this.hideWelcomeMessage();
             });
         }
     }
@@ -1020,47 +933,6 @@ class ChatInterface {
                 bubble.querySelectorAll('.chat-button').forEach(b => b.disabled = true);
             });
         });
-    }
-    
-    // Function to show the welcome message
-    showWelcomeMessage() {
-        if (!welcomeMessageShown) {
-            this.welcomeMessage.style.display = 'block';
-            // Trigger animation
-            setTimeout(() => {
-                this.welcomeMessage.style.opacity = '1';
-                this.welcomeMessage.style.transform = 'translateY(0)';
-            }, 10);
-            welcomeMessageShown = true;
-        }
-    }
-    
-    // Function to hide the welcome message
-    hideWelcomeMessage() {
-        this.welcomeMessage.style.opacity = '0';
-        this.welcomeMessage.style.transform = 'translateY(20px)';
-        setTimeout(() => {
-            this.welcomeMessage.style.display = 'none';
-        }, 300);
-    }
-    
-    // Function to trigger the install prompt
-    triggerInstallPrompt() {
-        // Check if the browser supports the beforeinstallprompt event
-        if ('beforeinstallprompt' in window) {
-            // The beforeinstallprompt event should have been fired already
-            // and we should have a reference to it. However, in this simple
-            // implementation, we just log a message.
-            console.log('Install prompt would be triggered here if available.');
-            // In a real implementation, you would call prompt() on the saved event.
-            // For now, we'll just hide the message.
-            this.hideWelcomeMessage();
-        } else {
-            // Fallback for browsers that don't support beforeinstallprompt
-            console.log('PWA installation not supported or not triggered automatically by this browser.');
-            // Hide the message anyway
-            this.hideWelcomeMessage();
-        }
     }
 }
 
